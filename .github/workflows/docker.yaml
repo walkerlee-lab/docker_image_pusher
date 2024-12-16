@@ -78,7 +78,7 @@ jobs:
             
             # Fetch platform if any
             platform=$(echo "$line" | awk -F'--platform[ =]' '{if (NF>1) print $2}' | awk '{print $1}')
-            platforms="linux/amd64,linux/arm64,linux/arm64/v8"  
+            platforms="linux/amd64,linux/arm64"  
 
             # Build and push the image for multiple platforms
             echo "Building and pushing for platforms: $platforms"

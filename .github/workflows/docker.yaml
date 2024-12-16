@@ -72,12 +72,17 @@ jobs:
             image=$(echo "$line" | awk '{print $NF}')
             image="${image%%@*}"
             
+            # Generate Dockerfile dynamically using echo
+            echo "Generating Dockerfile for $image:$version"
+            echo "FROM $image:$version" > Dockerfile
+            
             # Fetch platform if any
             platform=$(echo "$line" | awk -F'--platform[ =]' '{if (NF>1) print $2}' | awk '{print $1}')
             platforms="linux/amd64,linux/arm64,linux/arm64/v8"  
 
             # Build and push the image for multiple platforms
             echo "Building and pushing for platforms: $platforms"
+            echo "FROM --platform=$BUILDPLATFORM registry.cn-beijing.aliyuncs.com/walkerlee/alpine:3.21.0"
             docker buildx build --platform $platforms -t $ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$image --push .
 
             echo "Done with $image"

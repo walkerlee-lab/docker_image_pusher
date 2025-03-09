@@ -1,4 +1,5 @@
-alpine:3.21.0
-ubuntu:22.04
+#alpine:3.21.0
+#ubuntu:22.04
 #支持指定架构
 # --platform=linux/arm64 xiaoyaliu/alist
+postgres:16.8-alpine3.21

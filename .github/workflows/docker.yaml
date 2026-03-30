@@ -62,30 +62,50 @@ jobs:
         run: |
           # Pull images from the list
           while IFS= read -r line || [ -n "$line" ]; do
-            # Ignore empty lines and comments
+
             [[ -z "$line" ]] && continue
-            if echo "$line" | grep -q '^\s*#'; then
-              continue
-            fi
-            
-            echo "Processing image: $line"
-            image=$(echo "$line" | awk '{print $NF}')
-            image="${image%%@*}"
-            
-            # Generate Dockerfile dynamically using echo
-            echo "Generating Dockerfile for $image"
-            echo "FROM $image" > Dockerfile
-            
+            [[ "$line" =~ ^[[:space:]]*# ]] && continue
+
             # Fetch platform if any
             platform=$(echo "$line" | awk -F'--platform[ =]' '{if (NF>1) print $2}' | awk '{print $1}')
-            platforms="linux/amd64,linux/arm64"  
 
-            # Build and push the image for multiple platforms
-            echo "Building and pushing for platforms: $platforms"
-            echo "FROM --platform=$BUILDPLATFORM registry.cn-beijing.aliyuncs.com/walkerlee/alpine:3.21.0"
-            docker buildx build --platform $platforms -t $ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$image --push .
+            # 如果没有指定platform则默认
+            if [ -z "$platform" ]; then
+              platforms="linux/amd64,linux/arm64"
+            else
+              platforms="$platform"
+            fi
 
-            echo "Done with $image"
+            # 删除platform参数
+            clean_line=$(echo "$line" | sed -E 's/--platform[= ]+[a-zA-Z0-9\/,_-]+//g')
+
+            # 解析列
+            col_count=$(echo "$clean_line" | awk '{print NF}')
+
+            if [ "$col_count" -eq 1 ]; then
+              src_image=$(echo "$clean_line" | awk '{print $1}')
+              dst_image=$src_image
+            else
+              src_image=$(echo "$clean_line" | awk '{print $1}')
+              dst_image=$(echo "$clean_line" | awk '{print $2}')
+            fi
+
+            src_image="${src_image%%@*}"
+            dst_image="${dst_image%%@*}"
+
+            echo "Processing: $src_image -> $dst_image"
+            echo "Platforms: $platforms"
+
+            # 生成Dockerfile
+            echo "FROM $src_image" > Dockerfile
+
+            # buildx build
+            docker buildx build \
+              --platform $platforms \
+              -t $ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$dst_image \
+              --push .
+
+            echo "Done with $dst_image"
           done < images.txt
 
       - name: Clean up disk space

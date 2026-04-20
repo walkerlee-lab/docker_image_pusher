@@ -3,4 +3,5 @@
 #支持指定架构
 # --platform=linux/arm64 xiaoyaliu/alist
 #postgres:16.8-alpine3.21
-vllm/vllm-openai:glm51 vllm-openai:glm51
+#vllm/vllm-openai:glm51 vllm-openai:glm51
+approachingai/ktransformers:v0.5.3  ktransformers:v0.5.3

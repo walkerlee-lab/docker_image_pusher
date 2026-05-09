@@ -3,5 +3,5 @@
 #支持指定架构
 # --platform=linux/arm64 xiaoyaliu/alist
 # postgres:16.8-alpine3.21
-# vllm/vllm-openai:glm51 vllm-openai:glm51
-lmsysorg/sglang:v0.5.10.post1-runtime  sglang:v0.5.10.post1-runtime
+# lmsysorg/sglang:v0.5.10.post1-runtime  sglang:v0.5.10.post1-runtime
+vllm/vllm-openai:v0.20.1-x86_64-cu129-ubuntu2404 vllm-openai:v0.20.1-x86_64-cu129-ubuntu2404

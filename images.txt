@@ -4,4 +4,5 @@
 # --platform=linux/arm64 xiaoyaliu/alist
 # postgres:16.8-alpine3.21
 # lmsysorg/sglang:v0.5.10.post1-runtime  sglang:v0.5.10.post1-runtime
-vllm/vllm-openai:v0.20.1-x86_64-cu129-ubuntu2404 vllm-openai:v0.20.1-x86_64-cu129-ubuntu2404
+# vllm/vllm-openai:v0.20.1-x86_64-cu129-ubuntu2404 vllm-openai:v0.20.1-x86_64-cu129-ubuntu2404
+infiniflow/ragflow:v0.25.6   ragflow:v0.25.6

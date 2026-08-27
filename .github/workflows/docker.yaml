@@ -102,6 +102,7 @@ jobs:
             # buildx build
             docker buildx build \
               --platform $platforms \
+              --provenance=false \
               -t $ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$dst_image \
               --push .
 
